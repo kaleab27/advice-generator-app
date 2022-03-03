@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Advice generator app</title>
+    <style>
+      .attribution {
+        font-size: 11px;
+        text-align: center;
+        min-width: 300px;
+        padding: 5px 10px;
+        margin: auto;
+        background-color: hsl(217, 19%, 24%);
+        border-radius: 5px;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .attribution a {
+        color: hsl(228, 45%, 44%);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <main>
+        <section class="quote__card">
+          <p class="advice">ADVICE #<span class="advice__number">177</span></p>
+          <blockquote class="block__quote">
+            "It is easy to sit up and take notice, what's difficult is getting
+            up and taking action."
+          </blockquote>
+          <div class="divider__line mobile">
+            <img src="images/pattern-divider-mobile.svg" alt="divider line" />
+          </div>
+          <div class="divider__line desktop">
+            <img src="images/pattern-divider-desktop.svg" alt="divider line" />
+          </div>
+          <div class="dice__container">
+            <img src="images/icon-dice.svg" alt="divider line" />
+          </div>
+        </section>
+      </main>
+      <div class="attribution">
+        Challenge by
+        <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
+          >Frontend Mentor</a
+        >. Coded by <a href="#">Your Name Here</a>.
+      </div>
+    </div>
+    <script>
+      let btn = document.querySelector(".dice__container");
+      let advice__number = document.querySelector(".advice__number");
+      let block__quote = document.querySelector(".block__quote");
+      async function getRandomQuote() {
+        let randomNum = Math.floor(Math.random() * (200 - 1 + 1) + 1);
+        let quoteObj = await fetch(
+          `https://api.adviceslip.com/advice/${randomNum}`
+        )
+          .then((response) => response.json())
+          .then((data) => data.slip);
+        return quoteObj;
+      }
+      function renderQuote(quoteObj) {
+        advice__number.innerHTML = quoteObj.id;
+        block__quote.innerHTML = `"${quoteObj.advice}"`;
+      }
+      btn.addEventListener("click", async () => {
+        let quoteObj = await getRandomQuote();
+        renderQuote(quoteObj);
+      });
+    </script>
+  </body>
+</html>
